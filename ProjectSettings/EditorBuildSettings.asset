@@ -6,12 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/InstanceChecker.unity
-    guid: 81f69abece1029d439cef623fa01f7db
-  - enabled: 1
-    path: Assets/Scenes/Vtoobing.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
-    path: Assets/Scenes/Connector.unity
-    guid: ec17c26b303cb64419e8b71b84177708
+    path: Assets/Scenes/GettingHitByACar.unity
+    guid: b47e07b6f5ef1cf46b8cbd7c30c8627d
   m_configObjects: {}

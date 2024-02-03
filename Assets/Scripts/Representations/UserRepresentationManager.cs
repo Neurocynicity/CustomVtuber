@@ -15,11 +15,26 @@ public class UserRepresentationManager : MonoBehaviour
 
     public IUserRepresentation CurrentUserRepresentation;
     private int _currentRepresentationIndex;
-    private void Update()
+
+
+    private KeybindManager.Keybind _swapKeybind;
+    private void OnEnable()
     {
-        if (!Helper.IsHotkeyBeingInputted(_swapKey))
-            return;
+        _swapKeybind = new KeybindManager.Keybind(
+            UpdateUserRepresentation,
+            _swapKey
+            );
         
+        KeybindManager.Instance.AddKeybind(_swapKeybind);
+    }
+
+    private void OnDisable()
+    {
+        KeybindManager.Instance.RemoveKeybind(_swapKeybind);
+    }
+
+    private void UpdateUserRepresentation()
+    {
         CurrentUserRepresentation.SetInvisible();
 
         _currentRepresentationIndex++;

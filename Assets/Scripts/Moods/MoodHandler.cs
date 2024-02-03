@@ -16,16 +16,54 @@ public class MoodHandler : MonoBehaviour
         CurrentFaceData = MoodData[0];
     }
 
-    private void Update()
+    private KeybindManager keybindManager;
+    
+    private void OnEnable()
     {
-        foreach (var moodData in MoodData)
-        {
-            if (!Helper.IsHotkeyBeingInputted(moodData.MoodKeyCodes))
-                continue;
+        keybindManager = KeybindManager.Instance;
+        
+        foreach (var keybind in _keybinds)
+            keybindManager.AddKeybind(keybind);
+    }
 
-            CurrentFaceData = moodData;
-            OnMoodChanged?.Invoke(CurrentFaceData);
-            return;
+    private void OnDisable()
+    {
+        foreach (var keybind in _keybinds)
+            keybindManager.RemoveKeybind(keybind);
+    }
+
+    private List<KeybindManager.Keybind> _cachedKeybinds;
+
+    private List<KeybindManager.Keybind> _keybinds
+    {
+        get
+        {
+            if (_cachedKeybinds != null)
+                return _cachedKeybinds;
+
+            _cachedKeybinds = GetAllKeybinds();
+            return _cachedKeybinds;
         }
+    }
+
+    private List<KeybindManager.Keybind> GetAllKeybinds()
+    {
+        List<KeybindManager.Keybind> keybinds = new();
+
+        foreach (var asciiFaceMoodData in MoodData)
+        {
+            keybinds.Add(new KeybindManager.Keybind(
+                () => UpdateMood(asciiFaceMoodData),
+                asciiFaceMoodData.MoodKeyCodes
+            ));
+        }
+        
+        return keybinds;
+    }
+
+    private void UpdateMood(AsciiFaceMoodData data)
+    {
+        CurrentFaceData = data;
+        OnMoodChanged?.Invoke(CurrentFaceData);
     }
 }

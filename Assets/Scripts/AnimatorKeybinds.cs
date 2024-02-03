@@ -2,11 +2,26 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimatorKeybinds : MonoBehaviour
+public class AnimatorKeybinds : KeybindUser
 {
     [SerializeField] private Animator _animator;
     [SerializeField] private List<AnimationBindingData> _animationBindings;
 
+    protected override List<KeybindManager.Keybind> GetAllKeybinds()
+    {
+        List<KeybindManager.Keybind> keybinds = new();
+
+        foreach (var animationBinding in _animationBindings)
+        {
+            keybinds.Add(new KeybindManager.Keybind(
+                () => _animator.Play(animationBinding.animationName),
+                animationBinding.binding
+                ));
+        }
+
+        return keybinds;
+    }
+    
     private void Update()
     {
         foreach (var animationBinding in _animationBindings)
